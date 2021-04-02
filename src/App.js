@@ -1,25 +1,40 @@
-import logo from './logo.svg';
 import './App.css';
+import React,{Component} from 'react'
+import {connect} from "react-redux";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import GlobalLoader from "./components/GlobalLoader";
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import DefaultLayout from "./layouts/DefaultLayout";
+import AuthLayout from "./layouts/AuthLayout";
+
+
+function App(props) {
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: light)');
+
+    const theme = React.useMemo(
+        () =>
+            createMuiTheme({
+                palette: {
+                    type: 'dark',
+                },
+            }),
+        [prefersDarkMode],
+    );
+
+    return (
+        <ThemeProvider theme={theme}>
+            {props.loader && <GlobalLoader />}
+            {props.loggedIn ? <DefaultLayout/> : <AuthLayout/>}
+        </ThemeProvider>
+    );
+}
+//присваевает в props значения со state(redux) -> в connect
+function mapStateToProps(state){
+    return {
+        loader: state.global.gLoader,
+        loggedIn: state.auth.loggedIn
+    }
 }
 
-export default App;
+export default connect(mapStateToProps)(App);
