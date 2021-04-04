@@ -1,7 +1,7 @@
 import {SET_GLOBAL_LOADER, SET_TOP_LOADER} from "../actions/actionTypes";
 
 const initState = {
-    gLoader: false,
+    gLoader: true,
     topLoader: false
 }
 

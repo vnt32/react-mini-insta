@@ -1,18 +1,13 @@
-import {LOGIN, LOGOUT} from "../actions/actionTypes";
+import {SET_USER} from "../actions/actionTypes";
 
 const initState = {
-    // loggedIn: localStorage.getItem('loggedIn') === 'true'
-    loggedIn: false
+    user: null
 }
 
 export default function authReducer(state = initState, action){
     switch (action.type){
-        case LOGIN:
-            localStorage.setItem('loggedIn', 'true')
-            return {loggedIn: true}
-        case LOGOUT:
-            localStorage.setItem('loggedIn', 'false')
-            return {loggedIn: false}
+        case SET_USER:
+            return {user: action.payload}
         default: return state
     }
 }

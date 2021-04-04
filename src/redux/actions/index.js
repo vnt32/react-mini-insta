@@ -1,4 +1,4 @@
-import {ADD, APPEND, LOGIN, LOGOUT, RESET, SUB} from "./actionTypes";
+import {ADD, APPEND, RESET, SUB} from "./actionTypes";
 
 export function add () {
     return {
@@ -26,15 +26,5 @@ export function appendAsync (number) {
         setTimeout(() => {
             dispatch(append(number))
         }, 3000)
-    }
-}
-export function login () {
-    return {
-        type: LOGIN
-    }
-}
-export function logout () {
-    return {
-        type: LOGOUT
     }
 }

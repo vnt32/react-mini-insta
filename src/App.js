@@ -1,5 +1,5 @@
 import './App.css';
-import React,{Component} from 'react'
+import React, {useEffect} from 'react'
 import {connect} from "react-redux";
 
 import GlobalLoader from "./components/GlobalLoader";
@@ -7,10 +7,15 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import DefaultLayout from "./layouts/DefaultLayout";
 import AuthLayout from "./layouts/AuthLayout";
+import {auth} from "./redux/actions/authActions";
 
 
-function App(props) {
+function App({loader, user, auth}) {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: light)');
+
+    useEffect(() => {
+        auth ()
+    },[])
 
     const theme = React.useMemo(
         () =>
@@ -24,8 +29,8 @@ function App(props) {
 
     return (
         <ThemeProvider theme={theme}>
-            {props.loader && <GlobalLoader />}
-            {props.loggedIn ? <DefaultLayout/> : <AuthLayout/>}
+            {loader && <GlobalLoader />}
+            {user != null ? <DefaultLayout/> : <AuthLayout/>}
         </ThemeProvider>
     );
 }
@@ -33,8 +38,13 @@ function App(props) {
 function mapStateToProps(state){
     return {
         loader: state.global.gLoader,
-        loggedIn: state.auth.loggedIn
+        user: state.auth.user
+    }
+}
+function mapDispatchToProps(dispatch){
+    return {
+        auth: () => dispatch(auth())
     }
 }
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

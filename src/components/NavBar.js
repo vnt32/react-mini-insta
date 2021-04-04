@@ -6,11 +6,12 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import Switch from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import {Container, LinearProgress, ListItemIcon} from "@material-ui/core";
+import Avatar from "@material-ui/core/Avatar";
+import {AccountCircleOutlined} from "@material-ui/icons";
+import {logout} from "../redux/actions/authActions";
 
 const useStyles = makeStyles ((theme) => ({
     root: {
@@ -22,60 +23,79 @@ const useStyles = makeStyles ((theme) => ({
     title: {
         flexGrow: 1,
     },
+    small: {
+        width: theme.spacing(2.5),
+        height: theme.spacing(2.5),
+    },
 }));
 
-function MenuAppBar({loggedIn}) {
+function NavBar({loader, user, logout}) {
     const classes = useStyles ();
 
     const [anchorEl, setAnchorEl] = React.useState (null);
     const open = Boolean (anchorEl);
 
 
-    const handleMenu = (event) => {
-        setAnchorEl (event.currentTarget);
+    const handleMenuOpen = e => {
+        setAnchorEl (e.currentTarget);
     };
 
-    const handleClose = () => {
+    const handleMenuClose = () => {
         setAnchorEl (null);
     };
+
+    function handleLogout(){
+        handleMenuClose()
+        logout();
+    }
+
+    function getUserAvatar(){
+        if(user.avatar) return `http://api.lc/storage/${user.avatar}`
+        return user.avatar
+    }
 
     return (
         <div className={classes.root}>
             <AppBar position="static">
-                <Toolbar>
-                    <Typography variant="h6" className={classes.title}>
-                        HOSTER APP
-                    </Typography>
-                    <div>
-                        <IconButton
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={handleMenu}
-                            color="inherit"
-                        >
-                            <AccountCircle/>
-                        </IconButton>
-                        <Menu
-                            id="menu-appbar"
-                            anchorEl={anchorEl}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={open}
-                            onClose={handleClose}
-                        >
-                            <MenuItem onClick={handleClose}>Profile</MenuItem>
-                            <MenuItem onClick={handleClose}>My account</MenuItem>
-                        </Menu>
-                    </div>
-                </Toolbar>
+                <Container component="div">
+                    <Toolbar>
+                        <Typography variant="h6" className={classes.title}>
+                            HOSTER APP
+                        </Typography>
+                        <div>
+                            <IconButton
+                                aria-label="account of current user"
+                                aria-controls="menu-appbar"
+                                aria-haspopup="true"
+                                onClick={handleMenuOpen}
+                                color="inherit"
+                            >
+                                {user ? <Avatar src={getUserAvatar()} className={classes.small}/> : <AccountCircle/>}
+                            </IconButton>
+                            <Menu
+                                id="menu-appbar"
+                                anchorEl={anchorEl}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'left',
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'left',
+                                }}
+                                open={open}
+                                onClose={handleMenuClose}
+                            >
+                                <MenuItem onClick={handleMenuClose}>
+                                    Профиль
+                                </MenuItem>
+                                <MenuItem onClick={handleLogout}>Выйти</MenuItem>
+                            </Menu>
+                        </div>
+                    </Toolbar>
+                </Container>
+                {loader && <LinearProgress color={"secondary"}/>}
             </AppBar>
         </div>
     );
@@ -84,8 +104,15 @@ function MenuAppBar({loggedIn}) {
 //присваевает в props значения со state(redux) -> в connect
 function mapStateToProps(state) {
     return {
-        loader: state.global.topLoader
+        loader: state.global.topLoader,
+        user: state.auth.user
     }
 }
 
-export default connect (mapStateToProps) (MenuAppBar)
+function MDTP(dispatch){
+    return {
+        logout: () => dispatch(logout())
+    }
+}
+
+export default connect (mapStateToProps, MDTP) (NavBar)
