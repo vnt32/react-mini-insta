@@ -14,7 +14,8 @@ function App({loader, user, auth}) {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: light)');
 
     useEffect(() => {
-        auth ()
+        console.log ('m')
+        auth()
     },[])
 
     const theme = React.useMemo(

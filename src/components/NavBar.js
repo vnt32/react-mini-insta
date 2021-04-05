@@ -8,9 +8,8 @@ import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import {Container, LinearProgress, ListItemIcon} from "@material-ui/core";
+import {Container, LinearProgress} from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
-import {AccountCircleOutlined} from "@material-ui/icons";
 import {logout} from "../redux/actions/authActions";
 
 const useStyles = makeStyles ((theme) => ({

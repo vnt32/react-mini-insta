@@ -1,7 +1,10 @@
 import React from 'react';
-import LoginPage from "../pages/LoginPage";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
-import RegisterPage from "../pages/RegisterPage";
+
+import LoginPage from "../pages/auth/LoginPage";
+import RegisterPage from "../pages/auth/RegisterPage";
+import ResetPage from "../pages/auth/ResetPage";
+
 import {Container} from "@material-ui/core";
 
 export default function AuthLayout(){
@@ -11,6 +14,7 @@ export default function AuthLayout(){
                 <Switch>
                     <Route path="/" component={LoginPage} exact/>
                     <Route path="/register" component={RegisterPage}/>
+                    <Route path="/reset" component={ResetPage}/>
                 </Switch>
             </Router>
         </Container>

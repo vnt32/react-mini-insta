@@ -28,7 +28,7 @@ export function setUser (value = null){
 
 export function logout () {
     return (dispatch) => {
-        setCookie('token', null)
+        setCookie('token', '')
         dispatch(setUser())
     }
 }
