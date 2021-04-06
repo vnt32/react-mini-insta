@@ -258,7 +258,7 @@ function SettingsPage({user, loading, setLoading, setUserData}) {
                     </List>
                 </Container>
             </Box>
-            <PasswordChangeModal ref={dialogRef}/>
+            <PasswordChangeModal ref={dialogRef} notify={notify}/>
         </>
     )
 };
