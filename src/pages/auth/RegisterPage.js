@@ -7,7 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import {NavLink} from "react-router-dom";
+import {NavLink, useHistory} from "react-router-dom";
 import Copyright from "../../components/copyright";
 import {PersonAdd} from "@material-ui/icons";
 import Link from "@material-ui/core/Link";
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function RegisterPage({authAction}) {
+function RegisterPage({authAction, history}) {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
     const [errorText, setErrorText] = useState()
@@ -76,6 +76,7 @@ function RegisterPage({authAction}) {
             .catch(({response = null})=> {
                 setErrorText(response)
                 setError (true)
+                history.push("/")
             })
             .finally(() => setLoading(false))
     }

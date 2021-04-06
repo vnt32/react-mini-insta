@@ -11,6 +11,7 @@ import Menu from '@material-ui/core/Menu';
 import {Container, LinearProgress} from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import {logout} from "../redux/actions/authActions";
+import {NavLink, withRouter} from "react-router-dom";
 
 const useStyles = makeStyles ((theme) => ({
     root: {
@@ -20,6 +21,8 @@ const useStyles = makeStyles ((theme) => ({
         marginRight: theme.spacing (2),
     },
     title: {
+        textDecoration: "none",
+        color: "white",
         flexGrow: 1,
     },
     small: {
@@ -28,7 +31,7 @@ const useStyles = makeStyles ((theme) => ({
     },
 }));
 
-function NavBar({loader, user, logout}) {
+function NavBar({loader, user, logout, history}) {
     const classes = useStyles ();
 
     const [anchorEl, setAnchorEl] = React.useState (null);
@@ -41,6 +44,11 @@ function NavBar({loader, user, logout}) {
 
     const handleMenuClose = () => {
         setAnchorEl (null);
+    };
+
+    const handleMenuSettings = () => {
+        handleMenuClose()
+        history.push("/settings")
     };
 
     function handleLogout(){
@@ -58,7 +66,7 @@ function NavBar({loader, user, logout}) {
             <AppBar position="static">
                 <Container component="div">
                     <Toolbar>
-                        <Typography variant="h6" className={classes.title}>
+                        <Typography component={NavLink} to="/" variant="h6" className={classes.title}>
                             HOSTER APP
                         </Typography>
                         <div>
@@ -89,6 +97,9 @@ function NavBar({loader, user, logout}) {
                                 <MenuItem onClick={handleMenuClose}>
                                     Профиль
                                 </MenuItem>
+                                <MenuItem onClick={handleMenuSettings}>
+                                    Настройки
+                                </MenuItem>
                                 <MenuItem onClick={handleLogout}>Выйти</MenuItem>
                             </Menu>
                         </div>
@@ -114,4 +125,4 @@ function MDTP(dispatch){
     }
 }
 
-export default connect (mapStateToProps, MDTP) (NavBar)
+export default withRouter(connect (mapStateToProps, MDTP) (NavBar))

@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch, Redirect} from "react-router-dom";
 
 import LoginPage from "../pages/auth/LoginPage";
 import RegisterPage from "../pages/auth/RegisterPage";
@@ -15,6 +15,9 @@ export default function AuthLayout(){
                     <Route path="/" component={LoginPage} exact/>
                     <Route path="/register" component={RegisterPage}/>
                     <Route path="/reset" component={ResetPage}/>
+                    <Route>
+                        <Redirect to="/"/>
+                    </Route>
                 </Switch>
             </Router>
         </Container>
