@@ -10,13 +10,11 @@ import {
     makeStyles, Snackbar,
     TextField, withStyles
 } from "@material-ui/core";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import {Add, Assignment, Delete, Edit, Save} from "@material-ui/icons";
+import {Add, Delete, Edit, Save} from "@material-ui/icons";
 import Button from "@material-ui/core/Button";
 import PasswordChangeModal from "../modals/PasswordChangeModal";
 import {connect} from "react-redux";
 import {useInput} from "../hooks";
-import {Alert} from "@material-ui/lab";
 import {useSnackbar} from "notistack";
 import axios from "../axios";
 import {setTopLoader} from "../redux/actions/globalActions";
@@ -156,7 +154,6 @@ function SettingsPage({user, loading, setLoading, setUserData}) {
 
     return (
         <>
-            <CssBaseline />
             <Box mt={3}>
                 <Container maxWidth="xs">
                     <Box component="h1" textAlign="center">Настройки профиля</Box>

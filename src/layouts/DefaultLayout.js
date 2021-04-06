@@ -13,6 +13,7 @@ function DefaultLayout(){
             <Router>
                 <NavBar/>
                 <Container component="div">
+                    <CssBaseline/>
                     <Switch>
                         <Route path="/" component={MainPage} exact/>
                         <Route path="/settings" component={SettingsPage} exact/>
