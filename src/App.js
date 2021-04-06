@@ -30,8 +30,7 @@ function App({loader, user, auth}) {
 
     return (
         <ThemeProvider theme={theme}>
-            {loader && <GlobalLoader />}
-            {user != null ? <DefaultLayout/> : <AuthLayout/>}
+            {loader ? <GlobalLoader /> : user != null ? <DefaultLayout/> : <AuthLayout/>}
         </ThemeProvider>
     );
 }

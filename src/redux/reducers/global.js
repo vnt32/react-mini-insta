@@ -8,9 +8,9 @@ const initState = {
 export default function counterReducer(state = initState, action){
     switch (action.type){
         case SET_GLOBAL_LOADER:
-            return ({gLoader: action.payload})
+            return ({...state, gLoader: action.payload})
         case SET_TOP_LOADER:
-            return ({counter: action.payload})
+            return ({...state, topLoader: action.payload})
         default:
             return state
     }

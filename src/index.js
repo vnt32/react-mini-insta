@@ -20,11 +20,11 @@ const composeEnhancers =
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(reduxThunk)))
 
 const app = (
-    <React.StrictMode>
+    // <React.StrictMode>
         <Provider store={store}>
             <App/>
         </Provider>
-    </React.StrictMode>
+    // </React.StrictMode>
 )
 
 ReactDOM.render(app, document.getElementById('root'));
