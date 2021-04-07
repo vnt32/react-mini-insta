@@ -3,7 +3,6 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
-    DialogContentText,
     DialogTitle,
     LinearProgress,
     TextField
@@ -12,7 +11,7 @@ import Button from "@material-ui/core/Button";
 import {useInput} from "../hooks";
 import {Validate, ValidateGroup} from "react-validate";
 import {validatePassword} from "../validators";
-import axios from "../axios";
+import api from "../api";
 
 const PasswordChangeModal = forwardRef(({notify}, ref) => {
     const [open, setOpen] = useState(false);
@@ -42,7 +41,7 @@ const PasswordChangeModal = forwardRef(({notify}, ref) => {
         setConfirmError(password.value != confirmPassword.value)
         if(!passwordError && !confirmError){
             setLoading(true)
-            axios.post('me/update')
+            api.profile.update({password: password.value})
                 .then(() => {
                     handleClose()
                     notify(`Пароль успешно сменен`, 'success')

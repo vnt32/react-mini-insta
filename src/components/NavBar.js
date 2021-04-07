@@ -46,6 +46,11 @@ function NavBar({loader, user, logout, history}) {
         setAnchorEl (null);
     };
 
+    const handleMenuProfile = () => {
+        handleMenuClose()
+        history.push(`/${user.username}`)
+    };
+
     const handleMenuSettings = () => {
         handleMenuClose()
         history.push("/settings")
@@ -94,7 +99,7 @@ function NavBar({loader, user, logout, history}) {
                                 open={open}
                                 onClose={handleMenuClose}
                             >
-                                <MenuItem onClick={handleMenuClose}>
+                                <MenuItem onClick={handleMenuProfile}>
                                     Профиль
                                 </MenuItem>
                                 <MenuItem onClick={handleMenuSettings}>

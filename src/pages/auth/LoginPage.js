@@ -24,6 +24,8 @@ import {Validate, ValidateGroup} from "react-validate";
 import {validateEmail, validatePassword} from "../../validators";
 import {messageEmailError, messagePasswordError} from "../../validators/messages";
 
+import api from '../../api';
+
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8),
@@ -75,7 +77,7 @@ function LoginPage({authAction}) {
         if(e) e.preventDefault()
         setLoading(true)
         setError(false)
-        axios.post('login', {email: email.value, password: password.value})
+        api.auth.login(email.value, password.value)
             .then(({data})=> {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
                 saveToken (data.token)

@@ -11,10 +11,8 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
-import axios from "../../axios";
+import api from "../../api";
 import {CircularProgress} from "@material-ui/core";
-import {auth} from "../../redux/actions/authActions";
-import {connect} from "react-redux";
 import AlertBox from "../../components/AlertBox";
 import Copyright from "../../components/copyright";
 import {RotateLeft} from "@material-ui/icons";
@@ -66,7 +64,7 @@ export default function ResetPage() {
         if(e) e.preventDefault()
         setLoading(true)
         setError(false)
-        axios.post('reset', {email: email.value})
+        api.auth.reset(email.value)
             .then(({data})=> {
                //TODO: ADD OPEN MODAL
             })

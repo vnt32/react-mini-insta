@@ -16,7 +16,7 @@ import PasswordChangeModal from "../modals/PasswordChangeModal";
 import {connect} from "react-redux";
 import {useInput} from "../hooks";
 import {useSnackbar} from "notistack";
-import axios from "../axios";
+import api from "../api";
 import {setTopLoader} from "../redux/actions/globalActions";
 import {setUser} from "../redux/actions/authActions";
 
@@ -131,7 +131,7 @@ function SettingsPage({user, loading, setLoading, setUserData}) {
         if(username != user.username) fd.append('username', username.value)
         if(email != user.email) fd.append('email', email.value)
         setLoading(true)
-        axios.post('/me/update', fd)
+        api.profile.update(fd)
             .then(data => data.data.user)
             .then((user) => {
                 setUserData(user)

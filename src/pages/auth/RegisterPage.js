@@ -20,6 +20,7 @@ import axios from "../../axios";
 import {auth} from "../../redux/actions/authActions";
 import {connect} from "react-redux";
 import {setCookie} from "react-use-cookie";
+import api from '../../api';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -67,7 +68,7 @@ function RegisterPage({authAction, history}) {
         if(e) e.preventDefault()
         setLoading(true)
         setError(false)
-        axios.post('register', {email: email.value, password: password.value, name: name.value, username: username.value})
+        api.auth.register(email.value, password.value, name.value, username.value)
             .then(({data})=> {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
                 saveToken (data.token)
