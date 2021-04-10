@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import api from '../api';
@@ -11,6 +11,8 @@ import {makeStyles} from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import {Settings} from "@material-ui/icons";
 import FollowBtn from "../components/profile/FollowBtn";
+import Posts from "../components/profile/Posts";
+import FollowDetailsModal from "../modals/FollowDetailsModal";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,16 +40,30 @@ const useStyles = makeStyles((theme) => ({
     },
     ml: {
         marginLeft: theme.spacing(2)
+    },
+    my: {
+        marginTop: theme.spacing(2),
+        marginBottom: theme.spacing(2)
+    },
+    button:{
+        '&:disabled':{
+            color: "white"
+        },
+        '&:hover':{
+            background: 'none'
+        }
     }
 }));
 
 function ProfilePage({match, loading, setLoading, user, history}){
+
     const [errorEmpty, setErrorEmpty] = useState(false)
     const [error, setError] = useState(false)
     const [notFound, setNotFound] = useState(false)
 
     const [profile, setProfile] = useState(null)
 
+    const fm = useRef(null);
     const classes = useStyles()
 
     useEffect(() => {
@@ -110,6 +126,19 @@ function ProfilePage({match, loading, setLoading, user, history}){
         history.push('/settings')
     }
 
+    function openFollowersDialog(followed = false){
+        fm.current.handleOpen(followed)
+    }
+
+    function decNum(value, words){
+        value = Math.abs(value) % 100;
+        const num = value % 10;
+        if(value > 10 && value < 20) return words[2];
+        if(num > 1 && num < 5) return words[1];
+        if(num == 1) return words[0];
+        return words[2];
+    }
+
     function setFollowedStatus(followed){
         setProfile(p => ({
             ...p,
@@ -121,7 +150,7 @@ function ProfilePage({match, loading, setLoading, user, history}){
     return(
         <Box mt={3}>
             {
-                (!loading && errorEmpty || error || notFound) &&
+                (!loading && (errorEmpty || error || notFound)) &&
                 <Card className={classes.root} variant="outlined">
                     <CardContent>
                         <Typography variant="h5" component="h2" align="center">
@@ -143,39 +172,60 @@ function ProfilePage({match, loading, setLoading, user, history}){
                 </Card>
             }
             {
-                (!loading && !notFound && !error && !errorEmpty) &&
-                <Card className={classes.root} variant="outlined">
-                    <Box p={2}>
-                        <Grid container spacing={1}>
-                            <Grid item xs={4}>
-                                <Avatar alt="p" className={classes.avatar} src={getAvatar()}/>
-                            </Grid>
-                            <Grid item xs={8}>
-                                <Typography variant="h4">
-                                    {profile?.username}
-                                    {
-                                        isMy() &&
-                                        <IconButton onClick={handleSettings}>
-                                            <Settings />
-                                        </IconButton>
-                                    }
-                                    {
-                                        !isMy() &&
-                                        <FollowBtn followed={profile?.followed} id={profile?.id} onChange={setFollowedStatus}/>
-                                    }
-                                </Typography>
-                                <ButtonGroup className={classes.textPanel} variant="text">
-                                    <Button>Публикации: {profile?.posts_count}</Button>
-                                    <Button>Подписчики: {profile?.followers_count}</Button>
-                                    <Button>Подписки: {profile?.followed_count}</Button>
-                                </ButtonGroup>
-                                <Typography className={classes.pos} color="textSecondary">
-                                    {profile?.name}
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                    </Box>
-                </Card>
+                (
+                    !loading && !notFound && !error && !errorEmpty && profile) &&
+                    <>
+                        <Card className={classes.root} variant="outlined">
+                            <Box p={2}>
+                                <Grid container spacing={1}>
+                                    <Grid item xs={4}>
+                                        <Avatar alt="p" className={classes.avatar} src={getAvatar()}/>
+                                    </Grid>
+                                    <Grid item xs={8}>
+                                        <Typography variant="h4">
+                                            {profile?.username}
+                                            {
+                                                isMy() &&
+                                                <IconButton onClick={handleSettings}>
+                                                    <Settings />
+                                                </IconButton>
+                                            }
+                                            {
+                                                !isMy() &&
+                                                <FollowBtn followed={profile?.followed} id={profile?.id} onChange={setFollowedStatus}/>
+                                            }
+                                        </Typography>
+                                        <ButtonGroup className={classes.textPanel} variant="text">
+                                            <Button disabled className={classes.button}>
+                                                {profile?.posts_count}
+                                                &nbsp;
+                                                {decNum(profile?.posts_count, ['публикация', 'публикации', 'публикаций'])}
+                                            </Button>
+                                            <Button className={classes.button} onClick={() => openFollowersDialog()}>
+                                                {profile?.followers_count}
+                                                &nbsp;
+                                                {decNum(profile?.followers_count, ['подписчик', 'подписчика', 'подписчиков'])}
+                                            </Button>
+                                            <Button className={classes.button} onClick={() => openFollowersDialog(true)}>
+                                                {profile?.followed_count}
+                                                &nbsp;
+                                                {decNum(profile?.followed_count, ['подписка', 'подписки', 'подписок'])}
+                                            </Button>
+                                        </ButtonGroup>
+                                        <Typography className={classes.pos} color="textSecondary">
+                                            {profile?.name}
+                                        </Typography>
+                                    </Grid>
+                                </Grid>
+                            </Box>
+                        </Card>
+                        <Card className={classes.my} variant="outlined">
+                            <Box p={2}>
+                                <Posts username={profile?.username}/>
+                            </Box>
+                        </Card>
+                        <FollowDetailsModal ref={fm} username={profile.username}/>
+                    </>
             }
         </Box>
     )

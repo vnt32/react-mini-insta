@@ -1,8 +1,8 @@
 import axios from "../../../axios";
 
 export default {
-    getByUsername(username) {
-        return axios.get(`posts/${username}`)
+    getByUsername(username,page = 1) {
+        return axios.get(`posts/${username}?page=${page}`)
     },
     add(form){
         return axios.post('post', form)

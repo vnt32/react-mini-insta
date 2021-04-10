@@ -17,9 +17,9 @@ export default {
         return axios.post(`unfollow/${id}`)
     },
     getFollowers(username, page = 1){
-        return axios.get(`followers/${username}?page${page}`)
+        return axios.get(`followers/${username}?page=${page}`)
     },
     getFollowed(username, page = 1){
-        return axios.get(`followed/${username}?page${page}`)
+        return axios.get(`followed/${username}?page=${page}`)
     }
 }
