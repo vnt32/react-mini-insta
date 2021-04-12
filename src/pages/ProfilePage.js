@@ -13,6 +13,8 @@ import {Settings} from "@material-ui/icons";
 import FollowBtn from "../components/profile/FollowBtn";
 import Posts from "../components/profile/Posts";
 import FollowDetailsModal from "../modals/FollowDetailsModal";
+import {FollowContext} from '../contexts/followContext';
+import { setUserFollowed } from "../redux/actions/authActions";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -55,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function ProfilePage({match, loading, setLoading, user, history}){
+function ProfilePage({match, loading, setLoading, user, history, setMeFollowed}){
 
     const [errorEmpty, setErrorEmpty] = useState(false)
     const [error, setError] = useState(false)
@@ -78,6 +80,12 @@ function ProfilePage({match, loading, setLoading, user, history}){
             getProfile()
         }
     }, [match.params.username])
+
+    useEffect(()=>{
+        if(user.username == match.params.username){
+            setProfile(user)
+        }
+    }, [user])
 
     function handleBack(){
         history.push("/");
@@ -145,6 +153,11 @@ function ProfilePage({match, loading, setLoading, user, history}){
             followed,
             followers_count: followed ? p.followers_count + 1 : p.followers_count - 1
         }))
+        setMeFollowed(followed)
+    }
+
+    function setFollowedMeStatus(followed){
+        setMeFollowed(followed)
     }
 
     return(
@@ -224,7 +237,9 @@ function ProfilePage({match, loading, setLoading, user, history}){
                                 <Posts username={profile?.username}/>
                             </Box>
                         </Card>
-                        <FollowDetailsModal ref={fm} username={profile.username}/>
+                        <FollowContext.Provider value={{me: isMy(), callback: setFollowedMeStatus}}>
+                            <FollowDetailsModal ref={fm} username={profile.username}/>
+                        </FollowContext.Provider>
                     </>
             }
         </Box>
@@ -237,7 +252,8 @@ const mapState = (state) => ({
 })
 
 const mapDispatch = (dispatch) => ({
-    setLoading: (e) => dispatch(setTopLoader(e))
+    setLoading: (e) => dispatch(setTopLoader(e)),
+    setMeFollowed: (e) => dispatch(setUserFollowed(e))
 })
 
 export default withRouter(connect (mapState, mapDispatch) (ProfilePage))

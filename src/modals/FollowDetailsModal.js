@@ -119,7 +119,7 @@ const FollowDetailsModal = forwardRef(({username}, ref    ) =>{
                 {isFollowed ? 'Подписки' : 'Подписчики'}
             </DialogTitle>
             <DialogContent onScroll={scroll}>
-                <FollowersList items={data}/>
+                <FollowersList items={data} isFollowed={isFollowed}/>
                 {
                     (!loading && data.length == 0) &&
                     <Box display="flex" alignItems="center" justifyContent="center" mb={3}>

@@ -9,3 +9,4 @@ export const SET_TOP_LOADER = 'SET_TOP_LOADER'
 
 //Auth
 export const SET_USER = 'SET_USER'
+export const SET_USER_FOLLOWED = 'SET_USER_FOLLOWED'

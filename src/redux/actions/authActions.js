@@ -1,4 +1,4 @@
-import {SET_USER} from "./actionTypes";
+import {SET_USER, SET_USER_FOLLOWED} from "./actionTypes";
 import {getCookie, setCookie} from 'react-use-cookie'
 import api from "../../api";
 import {setGlobalLoader} from "./globalActions";
@@ -21,6 +21,13 @@ export function auth () {
 export function setUser (value = null){
     return {
         type: SET_USER,
+        payload: value
+    }
+}
+
+export function setUserFollowed(value = false){
+    return {
+        type: SET_USER_FOLLOWED,
         payload: value
     }
 }
