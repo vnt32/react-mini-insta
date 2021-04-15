@@ -23,11 +23,22 @@ const useStyles = makeStyles ((theme) => ({
     title: {
         textDecoration: "none",
         color: "white",
-        flexGrow: 1,
+        flexGrow: 'unset',
+        margin: 'auto',
+        [theme.breakpoints.up('sm')]: {
+            flexGrow: 1,
+            margin: 'unset'
+        },
+    },
+    avatar: {
+        display: 'none',
+        [theme.breakpoints.up('sm')]: {
+            display: 'block'
+        },
     },
     small: {
         width: theme.spacing(2.5),
-        height: theme.spacing(2.5),
+        height: theme.spacing(2.5)
     },
 }));
 
@@ -74,7 +85,7 @@ function NavBar({loader, user, logout, history}) {
                         <Typography component={NavLink} to="/" variant="h6" className={classes.title}>
                             HOSTER APP
                         </Typography>
-                        <div>
+                        <div className={classes.avatar}>
                             <IconButton
                                 aria-label="account of current user"
                                 aria-controls="menu-appbar"

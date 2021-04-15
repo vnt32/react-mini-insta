@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import Fab from '@material-ui/core/Fab';
@@ -7,7 +7,7 @@ import RestoreIcon from '@material-ui/icons/Restore';
 import HomeIcon from '@material-ui/icons/Home';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import AddIcon from '@material-ui/icons/Add';
-import {NavLink, withRouter} from "react-router-dom";
+import {NavLink, withRouter, useLocation} from "react-router-dom";
 import {connect} from "react-redux";
 import Avatar from "@material-ui/core/Avatar";
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -18,7 +18,10 @@ const useStyles = makeStyles((theme) => ({
         position: 'fixed',
         bottom: 0,
         left: 0,
-        width: '100%'
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            display: "none"
+          },
     },
     fab: {
         position: 'fixed',
@@ -40,9 +43,15 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function BottomNav({user}){
+function BottomNav({user, history}){
     const classes = useStyles();
-    const [value, setValue] = useState(0);
+
+    let location = useLocation();
+
+    const [value, setValue] = useState(location.pathname);
+    useEffect(() => {
+        if(value != location.pathname) setValue(location.pathname)
+    }, [location])
 
     const newPostDialog = useRef(null)
 
@@ -67,14 +76,14 @@ function BottomNav({user}){
             </Fab>
             <BottomNavigation
                 value={value}
-                onChange={(event, newValue) => {setValue(newValue)}}                
+                onChange={(event, newValue) => {history.push(newValue)}}
             >
-                <BottomNavigationAction value="" label="Home" icon={<HomeIcon />} />
+                <BottomNavigationAction value="/" label="Главная" icon={<HomeIcon />} />
                 <BottomNavigationAction disabled/>
                 <BottomNavigationAction
-                    value={user.name}
+                    value={"/"+user.name}
                     label={user.name}
-                    icon={<Avatar src={getUserAvatar()} className={classes.small+' ' + (value==user.name ? classes.active : classes.default)}/>} 
+                    icon={<Avatar src={getUserAvatar()} className={classes.small+' ' + (value=="/"+user.name ? classes.active : classes.default)}/>} 
                 />
             </BottomNavigation>
             <NewPostModal ref={newPostDialog}/>
