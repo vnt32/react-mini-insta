@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const FollowDetailsModal = forwardRef(({username}, ref    ) =>{
+const FollowDetailsModal = forwardRef(({username}, ref) =>{
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const test = useRef(null)

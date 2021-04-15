@@ -7,6 +7,7 @@ import SettingsPage from "../pages/SettingsPage";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { SnackbarProvider } from 'notistack';
 import ProfilePage from "../pages/ProfilePage";
+import BottomNav from '../components/BottomNav'
 
 function DefaultLayout(){
     return(
@@ -29,6 +30,7 @@ function DefaultLayout(){
                         )}/>
                     </Switch>
                 </Container>
+                <BottomNav/>
             </Router>
         </>
     )
