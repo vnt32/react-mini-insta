@@ -70,7 +70,9 @@ export default function PostsGrid({items}) {
                             width={height}
                             height={height}
                             effect="opacity"
-                            src={`http://api.lc/storage/${item.thumb}`} />
+                            src={`http://api.lc/storage/${item.thumb}`}
+                            style={{objectFit: 'cover'}}
+                        />
                         {/*<img src={`http://api.lc/storage/${item.thumb}`} style={{objectFit:'cover', width: '100%', height: '100%'}}/>*/}
                         <div className={classes.titleBar}>
                             <Box display="flex" alignItems="center">
