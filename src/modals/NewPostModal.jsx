@@ -4,6 +4,8 @@ import { Button, Dialog, Divider, AppBar, Toolbar, IconButton, Typography, Slide
 import CloseIcon from '@material-ui/icons/Close';
 import AlertModal from './AlertModal';
 import {useInput} from '../hooks'
+import {addNewPost} from '../redux/actions/globalActions'
+import {connect} from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -47,7 +49,7 @@ const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default forwardRef((props, ref) => {
+const NewPostModal = forwardRef(({uploadAction}, ref) => {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const desc = useInput()
@@ -104,6 +106,14 @@ export default forwardRef((props, ref) => {
             .catch(() => 0)
     }
 
+    function handleAdd() {
+        uploadAction({
+            files: filesArrayRef.current,
+            description: desc.value
+        })
+        handleClose()
+    }
+
     return (
         <div>
             <Box display="none">
@@ -118,7 +128,7 @@ export default forwardRef((props, ref) => {
                         <Typography variant="h6" className={classes.title}>
                             Добавить пост
                         </Typography>
-                        <Button autoFocus color="inherit" onClick={handleClose}>
+                        <Button autoFocus color="inherit" onClick={handleAdd}>
                             Добавить
                         </Button>
                     </Toolbar>
@@ -156,3 +166,9 @@ export default forwardRef((props, ref) => {
         </div>
     );
 })
+
+const MD = (dispatch) => ({
+    uploadAction: (form) => dispatch(addNewPost(form))
+})
+
+export default connect(null, MD,null, { forwardRef: true })(NewPostModal)

@@ -10,3 +10,6 @@ export const SET_TOP_LOADER = 'SET_TOP_LOADER'
 //Auth
 export const SET_USER = 'SET_USER'
 export const SET_USER_FOLLOWED = 'SET_USER_FOLLOWED'
+
+//BG
+export const SET_BACKGROUND_TASK = 'SET_BACKGROUND_TASK'

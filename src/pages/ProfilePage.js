@@ -32,9 +32,13 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: 12,
     },
     avatar: {
-        width: theme.spacing(20),
-        height: theme.spacing(20),
-        margin: "auto"
+        width: theme.spacing(13),
+        height: theme.spacing(13),
+        margin: "auto",
+        [theme.breakpoints.up('md')]: {
+            width: theme.spacing(20),
+            height: theme.spacing(20),
+        },
     },
     textPanel: {
         marginBottom: theme.spacing(1),
@@ -53,7 +57,10 @@ const useStyles = makeStyles((theme) => ({
         },
         '&:hover':{
             background: 'none'
-        }
+        },
+        [theme.breakpoints.down('xs')]: {
+            fontSize: '12px'
+        },
     }
 }));
 
@@ -191,10 +198,10 @@ function ProfilePage({match, loading, setLoading, user, history, setMeFollowed})
                         <Card className={classes.root} variant="outlined">
                             <Box p={2}>
                                 <Grid container spacing={1}>
-                                    <Grid item xs={4}>
+                                    <Grid item xs={3} md={4}>
                                         <Avatar alt="p" className={classes.avatar} src={getAvatar()}/>
                                     </Grid>
-                                    <Grid item xs={8}>
+                                    <Grid item xs={9} md={8}>
                                         <Typography variant="h4">
                                             {profile?.username}
                                             {

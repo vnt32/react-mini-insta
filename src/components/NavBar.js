@@ -8,10 +8,13 @@ import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import {Container, LinearProgress} from "@material-ui/core";
+import {Box, Container, LinearProgress, Paper} from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import {logout} from "../redux/actions/authActions";
 import {NavLink, withRouter} from "react-router-dom";
+import { Close } from '@material-ui/icons';
+import red from '@material-ui/core/colors/red';
+import green from '@material-ui/core/colors/green';
 
 const useStyles = makeStyles ((theme) => ({
     root: {
@@ -40,9 +43,20 @@ const useStyles = makeStyles ((theme) => ({
         width: theme.spacing(2.5),
         height: theme.spacing(2.5)
     },
+    posts: {
+        width: theme.spacing(3),
+        height: theme.spacing(3),
+        marginRight: '10px'
+    },
+    danger: {
+        background: red[500]
+    },
+    success: {
+        background: green[600]
+    }
 }));
 
-function NavBar({loader, user, logout, history}) {
+function NavBar({loader, user, logout, history, background}) {
     const classes = useStyles ();
 
     const [anchorEl, setAnchorEl] = React.useState (null);
@@ -123,6 +137,34 @@ function NavBar({loader, user, logout, history}) {
                 </Container>
                 {loader && <LinearProgress color={"secondary"}/>}
             </AppBar>
+            {
+                background != null &&
+                <Paper variant="outlined">
+                    {
+                        background.type == 'progress' &&
+                        <Box display="flex" alignItems="center" width="100%" paddingLeft="15px">
+                            <Avatar variant="square" src={background?.image} className={classes.posts}/>
+                            <Box width="100%" mr="10px">
+                                <LinearProgress color="secondary" variant={background.percent == 0 || background.percent == 100  ? "indeterminate" :'determinate'} value={background.percent}/>
+                            </Box>
+                            <IconButton>
+                                <Close/>
+                            </IconButton>
+                        </Box>
+                    }
+                    {
+                        (background.type == 'danger' || background.type == 'success') &&
+                        <Box className={classes[background.type]} display="flex" alignItems="center" justifyContent="center" py={1}>
+                            <Typography>
+                                {background.type == 'danger' && 'Произошла ошибка!'}
+                                {background.type == 'success' && 'Пост успешно загружен!'}
+                            </Typography>
+                        </Box>
+                    }
+
+                </Paper>
+            }
+
         </div>
     );
 }
@@ -131,7 +173,8 @@ function NavBar({loader, user, logout, history}) {
 function mapStateToProps(state) {
     return {
         loader: state.global.topLoader,
-        user: state.auth.user
+        user: state.auth.user,
+        background: state.global.background
     }
 }
 
