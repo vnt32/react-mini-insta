@@ -17,5 +17,8 @@ export default {
     },
     delPost(id){
         return axios.delete(`post/${id}`)
+    },
+    getFeed(page = 1){
+        return axios.get(`/feed?page=${page}`)
     }
 }

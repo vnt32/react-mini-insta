@@ -1,5 +1,5 @@
 import React from 'react';
-import ExplorePage from "../pages/ExplorePage";
+import FeedPage from "../pages/FeedPage";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import NavBar from "../components/NavBar";
 import {Container, Grow} from "@material-ui/core";
@@ -14,10 +14,10 @@ function DefaultLayout(){
         <>
             <Router>
                 <NavBar/>
-                <Container component="div">
+                <Container component="div" maxWidth="md">
                     <CssBaseline/>
                     <Switch>
-                        <Route path="/" component={ExplorePage} exact/>
+                        <Route path="/" component={FeedPage} exact/>
                         <Route path="/settings" component={SettingsPage} exact/>
                         <Route path="/:username" render={ProfilePage}/>
                         <Route render={() => (

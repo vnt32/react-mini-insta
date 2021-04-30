@@ -13,3 +13,7 @@ export const SET_USER_FOLLOWED = 'SET_USER_FOLLOWED'
 
 //BG
 export const SET_BACKGROUND_TASK = 'SET_BACKGROUND_TASK'
+
+//FEED
+export const SET_FEED = 'SET_FEED'
+export const SET_FEED_ERROR = 'SET_FEED_ERROR'
