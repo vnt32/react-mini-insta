@@ -60,10 +60,10 @@ function FeedPage({user, getFeedList, page, last_page, feedList = []}) {
                                     </Typography>
                                 </Box>
                             </Box>
+                            <Typography variant={'caption'} style={{textAlign: 'center', opacity: ".7"}} display="block" gutterBottom>
+                                HOSTER APP © {new Date().getFullYear()}
+                            </Typography>
                         </Box>
-                        <Typography variant={'caption'} style={{textAlign: 'center', opacity: ".7"}} display="block" gutterBottom>
-                            HOSTER APP © {new Date().getFullYear()}
-                        </Typography>
                     </Grid>
                 </Hidden>
             </Grid>

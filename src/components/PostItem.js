@@ -9,6 +9,7 @@ import {NavLink} from "react-router-dom";
 import moment from 'moment';
 import 'moment/locale/ru';
 import Carousel from "react-material-ui-carousel";
+import Like from "../components/LikeComponent"
 
 moment().locale('ru');
 
@@ -175,9 +176,7 @@ export default function PostItem({item = null}){
                         </>
                     ) : (
                         <>
-                            <IconButton aria-label="add to favorites">
-                                <FavoriteIcon/>
-                            </IconButton>
+                            <Like item={item}/>
                             <IconButton aria-label="share">
                                 <ShareIcon/>
                             </IconButton>
